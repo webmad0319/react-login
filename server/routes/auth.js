@@ -2,6 +2,7 @@ const express = require('express');
 const router  = express.Router();
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
+const Sandwich = require('../models/Sandwich');
 const passport = require('passport');
 
 
@@ -50,6 +51,32 @@ router.post('/signup', (req, res, next) => {
   })
   .then( savedUser => login(req, savedUser)) // Login the user using passport
   .then( user => res.json({status: 'signup & login successfully', user})) // Answer JSON
+  .catch(e => next(e));
+});
+
+router.post('/sandwich', (req, res, next) => {
+  const {name, ingredients} = req.body;
+
+  console.log('username', name)
+  console.log('ingredients', ingredients)
+
+  // Check if user exists in DB
+  Sandwich.findOne({ name })
+  .then( foundSandwich => {
+    if (foundSandwich) throw new Error('Sandwich already exists');
+
+    return new Sandwich({
+      name,
+      ingredients
+    }).save();
+  })
+  .then( sandwich => res.json({status: 'sandwich success', sandwich})) // Answer JSON
+  .catch(e => next(e));
+});
+
+router.put('/sandwich/:name', (req, res, next) => {
+  Sandwich.findOneAndUpdate({ name: req.params.name }, req.body)
+  .then( sandwich => res.json({status: 'sandwich updated', sandwich})) // Answer JSON
   .catch(e => next(e));
 });
 
