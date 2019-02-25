@@ -18,7 +18,7 @@ class App extends Component {
     this.service = new AuthService();
   }
 
-  getTheUser= (userObj) => {
+  getUser= (userObj) => {
     this.setState({
       loggedInUser: userObj
     })
@@ -65,8 +65,8 @@ class App extends Component {
           <header className="App-header">
             <Navbar userInSession={this.state.loggedInUser} logout={this.logout} />
             <Switch>
-              <Route exact path='/signup' render={() => <Signup getUser={this.getTheUser}/>}/>
-              <Route exact path='/login' render={() => <Login getUser={this.getTheUser}/>}/>
+              <Route exact path='/signup' render={() => <Signup getUser={this.getUser}/>}/>
+              <Route exact path='/login' render={() => <Login getUser={this.getUser}/>}/>
             </Switch>
           </header>
         </div>
