@@ -10,10 +10,13 @@ import Login from './components/auth/Login';
 import AuthService from './components/auth/AuthService';
 import Contents from './components/contents/Contents'
 
+//App es la aplicación base, que se sirve del servicio AuthService para conectar con la bbdd
 class App extends Component {
 
+  //en el tiempo de construcción de la aplicación, creamos una instancia del authservice
   constructor(props){
     super(props)
+    //arrancamos el estado con un valor de loggedInUser con nada (luego lo vamos a reemplazar con el valor real)
     this.state = { loggedInUser: null };
     this.service = new AuthService();
   }
@@ -31,8 +34,11 @@ class App extends Component {
     })
   }
 
+  //este método vuelca la información del usuario y lo guarda en el state de app que siempre puedes revisitar
   fetchUser(){
     if( this.state.loggedInUser === null ){
+
+      //utilizamos el método loggedin para cualquier momento que deseemos obtener la información del usuario quede guardada en el state de app
       this.service.loggedin()
       .then(response =>{
         this.setState({
@@ -48,18 +54,23 @@ class App extends Component {
   }
 
   render() {
+    //al hacer render, almacenamos la información del usuario existente en el state de app
     this.fetchUser()
 
+    //aqui hacemos rendering condicional dependiendo de si tenemos un usuario logeado o no
     if(this.state.loggedInUser){
+      //en este caso mostramos los contenidos ya que hay usuario
       return (
         <div className="App">
           <header className="App-header">
             <Navbar userInSession={this.state.loggedInUser} logout={this.logout} />
+            {/* aqui simplemente se muestra un lorem ipsum genérico para que veáis contenidos que solo se muestran a usuarios logeados */}
             <Contents></Contents>
           </header>
         </div>
       );
     } else {
+      //si no estás logeado, mostrar opcionalmente o login o signup
       return (
         <div className="App">
           <header className="App-header">
