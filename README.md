@@ -9,3 +9,7 @@ PORT=3010
 ~~~~
 
 3) Then run the server and the front!
+
+This is the main idea behind the front end logic
+
+![](img.gif)
